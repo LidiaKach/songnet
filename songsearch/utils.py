@@ -16,12 +16,17 @@ def create_batch(batch_size, x_input, y_input, input_shape):
     for i in range(batch_size):
         index = random.randint(0, x_input.shape[0] - 1)
         anc = x_input[index]
+        col = random.randint(0, x_input.shape[2] - 1 - w)
+        anc = anc[:, col:col + w]
+        pos = x_input[index]
+        col = random.randint(0, x_input.shape[2] - 1 - w)
+        pos = pos[:, col:col + w]
         y = y_input[index]
-        indices_for_pos = np.squeeze(np.where(y_input == y))
+        #indices_for_pos = np.squeeze(np.where(y_input == y))
         indices_for_neg = np.squeeze(np.where(y_input != y))
-
-        pos = x_input[indices_for_pos[random.randint(0, len(indices_for_pos) - 1)]]
         neg = x_input[indices_for_neg[random.randint(0, len(indices_for_neg) - 1)]]
+        col = random.randint(0, x_input.shape[2] - 1 - w)
+        neg = neg[:, col:col + w]
 
         anchors[i] = anc
         positives[i] = pos
@@ -77,6 +82,7 @@ def load_data(folder, filename):
     y = y.astype(np.int32)
 
     return x, y
+
 
 def reconstruct_net(recomodel, weights, input_shape, emb_size):
     input_sng = tf.keras.layers.Input(shape=input_shape)

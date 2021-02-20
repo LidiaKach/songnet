@@ -3,16 +3,19 @@ from songsearch.base_model import base_model
 from songsearch import config
 from songsearch import utils
 import os
+import tensorflow as tf
+gpus = tf.config.experimental.list_physical_devices('GPU')
+tf.config.experimental.set_memory_growth(gpus[0], True)
 
 
 emb_size = config.EMBEDDING_DIM
 
-x_train, y_train = utils.load_data(os.path.join(os.getcwd(), config.DATA_PATH), "data.npz")
+x_train, y_train = utils.load_data(os.path.join(os.getcwd(), config.DATA_PATH), "spect.npz")
 
 alpha = 0.2
 batch_size = config.BATCH_SIZE
 epochs = config.EPOCHS
-steps_per_epoch = int(x_train.shape[0] / batch_size)
+steps_per_epoch = 10
 
 embedding_model = faceRecoModel(config.SPEC_SHAPE, config.EMBEDDING_DIM)
 embedding_model.summary()
@@ -27,4 +30,4 @@ _ = net.fit(
 
 )
 
-net.save_weights(os.path.sep.join([config.MODEL_PATH, "model_weights.h5"]))
+net.save_weights(os.path.sep.join([config.MODEL_PATH, "model_weights_gpu.h5"]))

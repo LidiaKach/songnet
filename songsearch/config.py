@@ -3,8 +3,8 @@ import os
 # specify the shape of the inputs for our network
 SPEC_SHAPE = (513, 221, 1)
 # specify the batch size and number of epochs
-BATCH_SIZE = 100
-EPOCHS = 20
+BATCH_SIZE = 5
+EPOCHS = 5
 
 # define the path to the base output directory
 BASE_OUTPUT = "output"

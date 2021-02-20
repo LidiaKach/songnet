@@ -92,4 +92,22 @@ def generate_datafile(audio_folder, output_folder,  output_number, length, outpu
     np.savez(os.path.sep.join([output_folder, output_file]), train_x=train_x, train_y=train_y)
 
 
-generate_datafile("C:\\Users\\lkach\\PycharmProjects\\songnet\\audio","C:\\Users\\lkach\\PycharmProjects\\songnet\\data",50,221)
+def generate_spectdatafile(audio_folder, output_folder, output_file="spect"):
+    train_x = []
+    train_y = []
+
+    for filename in os.listdir(audio_folder):
+        spect, _ = get_spectrogram(audio_folder, filename)
+        train_x.append(spect)
+        train_y.append(filename)
+
+    train_x = np.array(train_x)
+    train_y = np.array(train_y)
+    np.savez(os.path.sep.join([output_folder, output_file]), train_x=train_x, train_y=train_y)
+
+
+
+
+
+
+
